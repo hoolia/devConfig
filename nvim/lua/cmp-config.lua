@@ -7,29 +7,32 @@ local function setup()
                 require('luasnip').lsp_expand(args.body)
             end
         },
-        window = {
-            completion = cmp.config.window.bordered(),
-            documentation = cmp.config.window.bordered()
-        },
         mapping = cmp.mapping.preset.insert({
-            ["<C-k>"] = cmp.mapping.scroll_docs( -4),
+            ["<C-k>"] = cmp.mapping.scroll_docs(-4),
             ["<C-j>"] = cmp.mapping.scroll_docs(4),
             ["<CR>"] = cmp.mapping.confirm({ select = true })
         }),
         sources = cmp.config.sources({
             { name = "luasnip" }, { name = "crates" }, { name = "path" },
-            { name = 'spell' }, { name = "buffer" }, { name = "calc" },
-            { name = "crates" }, { name = 'cmp_pandoc' },
-            { name = "nvim_lsp_signature_help" }, { name = "nvim_lua" },
+            { name = "buffer" }, { name = "calc" },
+            { name = "crates" }, { name = 'cmp_pandoc' }, { name = "pandoc_references" },
+            { name = "nvim_lsp_signature_help" },
             { name = "latex_symbols" }, { name = "nvim_lsp" }, { name = "buffer" }
         })
     })
 
     -- Set configuration for specific filetype.
+    cmp.setup.filetype("lua", {
+        sources = cmp.config.sources({
+            { name = "nvim_lua" },
+        }, {})
+    })
+
+    -- Set configuration for specific filetype.
     cmp.setup.filetype("gitcommit", {
         sources = cmp.config.sources({
-            { name = "cmp_git" }, -- You can specify the `cmp_git` source if you were installed it.
-            { name = "spell" }, { name = "conventionalcommits" }
+            { name = "cmp_git" },
+            { name = "conventionalcommits" }
         }, { { name = "buffer" } })
     })
 
@@ -44,6 +47,15 @@ local function setup()
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({ { name = "path" } },
             { { name = "cmdline" }, { name = "nvim_lua" } })
+    })
+
+    require('cmp_pandoc').setup({
+        filetypes = { "pandoc", "markdown", "bib" },
+        bibliography = {
+            documentation = true,
+            fields = { "type", "title", "author", "year" }
+        },
+        crossref = { documentation = true, enable_nabla = true }
     })
 end
 

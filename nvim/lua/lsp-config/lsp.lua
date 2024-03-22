@@ -9,61 +9,105 @@ local function setup()
         settings = { Lua = { diagnostics = { globals = { 'vim', 'use' } } } }
     }
 
-    lspconfig.angularls.setup { capabilities = capabilities }
+    lspconfig.astro.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.volar.setup { capabilities = capabilities }
+    lspconfig.gopls.setup {
+        capabilities = capabilities,
+    }
 
-    lspconfig.vuels.setup { capabilities = capabilities }
+    lspconfig.eslint.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.astro.setup { capabilities = capabilities }
+    lspconfig.svelte.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.svelte.setup { capabilities = capabilities }
+    lspconfig.slint_lsp.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.svlangserver.setup { capabilities = capabilities }
+    lspconfig.svlangserver.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.svls.setup { capabilities = capabilities }
+    lspconfig.biome.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.awk_ls.setup { capabilities = capabilities }
+    lspconfig.volar.setup {
+        capabilities = capabilities,
+        init_options = {
+            typescript = {
+                tsdk = '/home/flagmate/.local/share/nvim/mason/packages/vue-language-server/node_modules/typescript/lib'
+            },
+        }
+    }
 
-    lspconfig.emmet_ls.setup { capabilities = capabilities }
+    lspconfig.svls.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.bashls.setup { capabilities = capabilities }
+    lspconfig.emmet_ls.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.clangd.setup { capabilities = capabilities }
+    lspconfig.bashls.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.cmake.setup { capabilities = capabilities }
+    lspconfig.clangd.setup {
+        capabilities = capabilities,
+        cmd = {
+            "clangd",
+            "--compile-commands-dir=/home/flagmate/.config/nvim/lua/lsp-config/compile_flags.txt",
+        }
+    }
+
+    lspconfig.cmake.setup {
+        capabilities = capabilities
+    }
+
+    lspconfig.htmx.setup {
+        capabilities = capabilities
+    }
 
     lspconfig.cssmodules_ls.setup {
         capabilities = capabilities,
+
         init_options = {
             provideFormatter = true,
             embeddedLanguages = { css = true, javascript = true },
             configurationSection = { "html", "css", "javascript" }
-
         }
     }
 
-    lspconfig.dockerls.setup { capabilities = capabilities }
+    lspconfig.dockerls.setup {
+        capabilities = capabilities
+    }
 
     lspconfig.docker_compose_language_service.setup {
         capabilities = capabilities
     }
 
-    lspconfig.ember.setup { capabilities = capabilities }
+    lspconfig.gdscript.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.eslint.setup { capabilities = capabilities }
+    lspconfig.html.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.gdscript.setup { capabilities = capabilities }
+    lspconfig.jsonls.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.gopls.setup { capabilities = capabilities }
 
-    lspconfig.html.setup { capabilities = capabilities }
-
-    lspconfig.jsonls.setup { capabilities = capabilities }
-
-    lspconfig.solang.setup { capabilities = capabilities }
-
-    lspconfig.pyre.setup { capabilities = capabilities }
+    lspconfig.pyre.setup {
+        capabilities = capabilities
+    }
 
     lspconfig.pylsp.setup {
         capabilities = capabilities,
@@ -76,37 +120,61 @@ local function setup()
         }
     }
 
-    lspconfig.pyright.setup { capabilities = capabilities }
+    lspconfig.pyright.setup {
+        pabilities = capabilities
+    }
 
-    lspconfig.rust_analyzer.setup { apabilities = capabilities }
+    lspconfig.rust_analyzer.setup {
+        apabilities = capabilities
+    }
 
-    lspconfig.sqlls.setup { capabilities = capabilities }
+    lspconfig.sqlls.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.stylelint_lsp.setup { capabilities = capabilities }
+    lspconfig.tsserver.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.tsserver.setup { capabilities = capabilities }
+    lspconfig.cssls.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.cssls.setup { capabilities = capabilities }
+    lspconfig.prismals.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.prismals.setup { capabilities = capabilities }
+    lspconfig.tailwindcss.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.tailwindcss.setup { capabilities = capabilities }
+    lspconfig.taplo.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.taplo.setup { capabilities = capabilities }
+    lspconfig.zls.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.zls.setup { capabilities = capabilities }
+    lspconfig.solidity.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.vimls.setup { capabilities = capabilities }
+    lspconfig.solidity_ls_nomicfoundation.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.solidity.setup { capabilities = capabilities }
+    lspconfig.asm_lsp.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.asm_lsp.setup { capabilities = capabilities }
+    lspconfig.yamlls.setup {
+        capabilities = capabilities
+    }
 
-    lspconfig.quick_lint_js.setup { capabilities = capabilities }
-
-    lspconfig.yamlls.setup { capabilities = capabilities }
-
-    lspconfig.lemminx.setup { capabilities = capabilities }
+    lspconfig.lemminx.setup {
+        capabilities = capabilities
+    }
 
     lspconfig.texlab.setup {
         filetypes = { "tex", "bib", "markdown", "plaintex" },
@@ -116,6 +184,51 @@ local function setup()
             client.server_capabilities.documentRangeFormattingProvider = false
         end
     }
+
+    lspconfig.phpactor.setup {
+        capabilities = capabilities
+    }
+
+    lspconfig.jdtls.setup({
+        capabilities = capabilities,
+        settings = {
+            java = {
+                configuration = {
+                    runtimes = {
+                        {
+                            name = "JavaSE-21",
+                            path = "/usr/lib/jvm/java-21-openjdk",
+                            default = true,
+                        }
+                    }
+                }
+            }
+        }
+    })
+
+    require("flutter-tools").setup({
+        debugger = { enabled = false, },
+        outline = { auto_open = false },
+        decorations = { statusline = { device = true, app_version = true } },
+        widget_guides = { enabled = true, debug = true },
+        dev_log = { enabled = false, open_cmd = "tabedit" },
+        lsp = {
+            color = {
+                enabled = true,
+                background = false,
+                foreground = true,
+                background_color = nil,
+                virtual_text = true,
+                virtual_text_str = "■"
+            },
+            settings = {
+                showTodos = true,
+                renameFilesWithClasses = "prompt"
+            },
+            capabilities = capabilities,
+        }
+    })
+    require("telescope").load_extension("flutter")
 end
 
-return { setup = setup, capabilities = capabilities }
+return { setup = setup }

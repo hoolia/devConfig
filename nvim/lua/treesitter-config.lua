@@ -1,15 +1,15 @@
 local function treesitter_setup()
     require("nvim-treesitter.configs").setup({
-        ensure_installed = "all",
-        auto_install = true,
-        indent = { enable = true },
-        autotag = { enable = true },
+        ensure_installed      = "all",
+        auto_install          = true,
+        indent                = { enable = true },
+        autotag               = { enable = true },
         context_commentstring = {
-            enable = true, -- comment
+            enable = true,
             enable_autocmd = false
         },
-        highlight = {
-            enable = true, -- comment
+        highlight             = {
+            enable = true,
         }
     })
 end
@@ -23,7 +23,7 @@ local function autopairs_setup()
         enable_check_bracket_line = true,
         check_ts = true,
         ts_config = {
-            lua = { "string" }, -- it will not add pair on that treesitter node
+            lua = { "string" },
             javascript = { "template_string" }
         }
     })

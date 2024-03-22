@@ -2,8 +2,7 @@ local cmd = vim.cmd
 
 local function get_output_path()
     local path = vim.api.nvim_buf_get_name(0)
-    return string.gsub(path, "^(/.-)/([^/]+)%.%w+$",
-        "/home/flagmate/Documents/%2.pdf")
+    return string.gsub(path, ".md", ".pdf")
 end
 
 local function pandoc_cmd(opts, use_template)
@@ -20,8 +19,9 @@ end
 local OPTS = "--pdf-engine=xelatex " ..
     " --lua-filter ~/.local/share/pandoc/short-captions.lua " ..
     "--lua-filter ~/.local/share/pandoc/table-short-captions.lua " ..
-    "--lua-filter ~/.local/share/pandoc/section-refs.lua " ..
-    "--standalone -F pandoc-crossref --citeproc  "
+    "--standalone -F pandoc-crossref " ..
+    "-F pandoc-acro " ..
+    "--citeproc "
 
 local wordcount = "--lua-filter " .. " ~/.local/share/pandoc/wordcount.lua "
 

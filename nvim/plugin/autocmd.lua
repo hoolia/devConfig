@@ -30,6 +30,8 @@ autocmd("BufEnter", {
     end
 })
 
+vim.cmd [[ autocmd BufRead,BufNewFile *.slint set filetype=slint ]]
+
 autocmd("BufEnter", {
     group = group_lsp,
     callback = function() vim.g.completion_trigger_character = { '.', '=' } end

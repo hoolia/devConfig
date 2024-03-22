@@ -1,5 +1,10 @@
 local telescope = require('telescope.builtin')
 local gs = require('gitsigns')
+local neogit = require('neogit')
+local autocmd = vim.api.nvim_create_autocmd
+local autogroup = vim.api.nvim_create_augroup
+
+local nabla_group = autogroup("NABLA", { clear = true })
 
 local vim_diagnostic = vim.diagnostic
 local vim_lsp = vim.lsp.buf
@@ -17,10 +22,6 @@ keymap_set('n', '<leader>u', '<cmd>m .+1<cr>==', { noremap = true, silent = true
 keymap_set('n', '<leader>i', '<cmd>m .-2<cr>==', { noremap = true, silent = true })
 keymap_set('n', '<leader>bp', ':bprevious<CR>', { noremap = true, silent = true })
 keymap_set('n', '<leader>bn', ':bnext<CR>', { noremap = true, silent = true })
-
--- movements
-keymap_set('n', 'j', 'gj')
-keymap_set('n', 'k', 'gk')
 
 keymap_set('n', '<m-k>', '<C-w>k', { noremap = true, silent = true })
 keymap_set('n', '<m-j>', '<C-w>j', { noremap = true, silent = true })
@@ -45,6 +46,12 @@ keymap_set('n', '<leader>co', ':foldopen<CR>', { noremap = true, silent = true }
 keymap_set('n', '<leader>cc', ':foldclose<CR>', { noremap = true, silent = true })
 
 keymap_set('t', '<c-t>', '<C-\\><C-n>', { noremap = true, silent = true })
+
+keymap_set('n', '<leader>fww', function() require('telescope').extensions.git_worktree.git_worktrees() end,
+    { noremap = true, silent = true, desc = "find files" })
+
+keymap_set('n', '<leader>fwc', function() require('telescope').extensions.git_worktree.create_git_worktree() end,
+    { noremap = true, silent = true, desc = "find files" })
 
 keymap_set('n', '<leader>ff', function() telescope.find_files() end,
     { noremap = true, silent = true, desc = "find files" })
@@ -132,6 +139,9 @@ keymap_set('n', '<leader>th', function() gs.preview_hunk() end,
     { noremap = true, silent = true, desc = "preview hunk" })
 
 keymap_set('n', '<leader>tD', function() gs.toggle_deleted() end,
+    { noremap = true, silent = true, desc = "gitsigns toggle deleted" })
+
+keymap_set('n', '<leader>to', function() neogit.open({}) end,
     { noremap = true, silent = true, desc = "gitsigns toggle deleted" })
 
 keymap_set('n', '<leader>td', function() gs.diffthis() end,
@@ -232,6 +242,24 @@ keymap_set('n', '<leader>dd', function() require("dapui").toggle() end,
 keymap_set('n', '<leader>dt', function() require("dap").terminate() end,
     { noremap = true, silent = true, desc = "terminate" })
 
+keymap_set('n', '<leader>dr', function() require("dap").restart() end,
+    { noremap = true, silent = true, desc = "terminate" })
+
 -- unnamed clipboard
 keymap_set({ 'n', 'v' }, '\\', "\"+",
     { noremap = true, silent = true, desc = "terminate" })
+
+autocmd("FileType", {
+    group = nabla_group,
+    desc = "preview math formila",
+    pattern = { "markdown", "pandoc", "rmd", "bib" },
+    callback = function()
+        keymap_set('n', '<leader>p', function() require("nabla").popup() end,
+            { noremap = true, silent = true, desc = "terminate" })
+    end
+})
+
+keymap_set('n', '<leader>wn', '<cmd>tabnext<CR>', { noremap = true, silent = true })
+keymap_set('n', '<leader>wo', '<cmd>tabnew<CR>', { noremap = true, silent = true })
+keymap_set('n', '<leader>wp', '<cmd>tabprevious<CR>', { noremap = true, silent = true })
+keymap_set('n', '<leader>wq', '<cmd>tabclose<CR>', { noremap = true, silent = true })

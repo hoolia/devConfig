@@ -27,13 +27,13 @@ o.shiftwidth = 4
 o.expandtab = true
 o.smartindent = true
 o.title = true
-o.t_Co = 256
 o.nu = true
 o.relativenumber = true
 o.winbar = "%n %m%f %r%h%w"
 o.mouse = ""
 
 opt.shortmess:append("c")
+opt.termguicolors = true
 
 g.do_filetype_lua = 1
 g.did_load_filetypes = 0
@@ -64,4 +64,4 @@ else
     cmd("highlight Visual ctermfg=white guifg=white")
 end
 
-vim.g.markdown_fenced_languages = {"ts=typescript"}
+vim.g.markdown_fenced_languages = { "ts=typescript" }

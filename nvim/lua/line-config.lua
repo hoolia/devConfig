@@ -6,14 +6,21 @@ local function setup()
             globalstatus = true
         },
         sections = {
-            lualine_a = { 'mode' },
-            lualine_b = { 'branch' },
-            lualine_c = { 'diagnostics' },
-            lualine_x = { 'encoding', 'fileformat', 'filetype' },
-            lualine_y = { 'progress' },
-            lualine_z = { 'location' }
+            lualine_a = { 'mode', 'branch' },
+            lualine_b = {},
+            lualine_c = { 'iagnostics' },
+            lualine_x = { 'selectioncount', 'encoding', 'fileformat', 'filetype' },
+            lualine_y = {},
+            lualine_z = { 'filesize', 'location', 'progress' }
         },
-        tabline = {},
+        winbar = {
+            lualine_a = {},
+            lualine_b = {},
+            lualine_c = {},
+            lualine_x = {},
+            lualine_y = {},
+            lualine_z = {},
+        },
         extensions = {}
     })
 end

@@ -9,7 +9,6 @@ local function setup(ignored_files)
             mappings = {
                 i = {
                     ["<C-x>"] = false,
-                    ["<C-q>"] = require("telescope.actions").send_to_qflist,
                     ["<C-h>"] = "which_key"
                 }
             }
@@ -17,4 +16,4 @@ local function setup(ignored_files)
     })
 end
 
-return {setup = setup}
+return { setup = setup }

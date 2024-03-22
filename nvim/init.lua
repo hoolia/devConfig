@@ -11,8 +11,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local ignored_files = {
-    "Cargo.lock", "__pycache__", "node_modules", "packer_compiled.lua",
-    "snippets"
+    "Cargo.lock", "__pycache__", "node_modules",
 }
 
 local function theme_setup()
@@ -23,6 +22,7 @@ local function theme_setup()
         dim_inactive = true,
         lualine_bold = true
     })
+
     vim.cmd([[colorscheme tokyonight]])
 end
 
@@ -30,33 +30,30 @@ require("lazy").setup({
     {
         "williamboman/mason.nvim",
         build = ":MasonUpdate",
-        lazy = false,
+        dependencies = {
+            { "williamboman/mason-lspconfig.nvim" }, --  linting
+        },
         config = function()
             require("mason").setup()
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    "angularls",
                     "volar",
-                    "vuels",
+                    "htmx",
                     "astro",
                     "svelte",
                     "svlangserver",
                     "svls",
-                    "awk_ls",
-                    "emmet_ls",
                     "bashls",
                     "clangd",
+                    "eslint",
                     "cmake",
                     "cssmodules_ls",
+                    "jdtls",
                     "dockerls",
                     "docker_compose_language_service",
-                    "ember",
-                    "eslint",
-                    "gopls",
                     "html",
                     "jsonls",
-                    "solang",
                     "pyre",
                     "pylsp",
                     "pyright",
@@ -69,194 +66,190 @@ require("lazy").setup({
                     "tailwindcss",
                     "taplo",
                     "zls",
-                    "vimls",
                     "solidity",
+                    "solidity_ls_nomicfoundation",
                     "asm_lsp",
-                    "quick_lint_js",
                     "yamlls",
                     "lemminx",
                     "texlab"
-
                 },
             })
         end
-    },                                       -- linting
-    { "williamboman/mason-lspconfig.nvim" }, --  linting
+    },
+
+
     {
         "neovim/nvim-lspconfig",
         lazy = true,
         after = "williamboman/mason.nvim",
         config = function() require('lsp-config.lsp').setup() end
-    },                                                                                            -- linting
-    { "Saecki/crates.nvim",               lazy = false, ft = { "rust", "toml" }, config = true }, -- linting
+    },
+
+    {
+        'akinsho/flutter-tools.nvim', ft = { "dart" },
+    },
+
+    { "Saecki/crates.nvim",    ft = { "rust", "toml" }, config = true },
+
     {
         'simrat39/rust-tools.nvim',
-        lazy = false,
         ft = { "rust", "toml" },
         config = function() require('lsp-config.rusttools').setup() end
-    }, -- linting
+    },
+
     {
         'jose-elias-alvarez/null-ls.nvim',
-        lazy = false,                                                -- linting
-        config = function() require('lsp-config.nulls').setup() end
-    },                                                               -- linting
-    { 'j-hui/fidget.nvim',            lazy = false, config = true }, -- linting
+        config = function() require('lsp-config.nullls').setup() end
+    },
+
     {
         "nvim-treesitter/nvim-treesitter",
-        lazy = false,
-        run = ":TSUpdate",
+        build = ":TSUpdate",
         config = function()
             require('treesitter-config').treesitter_setup()
             require("treesitter-config").autopairs_setup()
             require('refactoring').setup({})
             require('Comment').setup()
-
-            local ft = require('Comment.ft')
-            ft.pact = ';; %s'
         end,
-        dependencies = {
-            "nvim-treesitter/nvim-treesitter-context",       -- linting
-            "windwp/nvim-autopairs",                         -- linting
-            'windwp/nvim-ts-autotag',                        -- linting
-            { 'ThePrimeagen/refactoring.nvim', lazy = true } -- linting
-        }
-    },                                                       -- linting
-    { "nvim-lua/popup.nvim",          lazy = false },        -- linting
-    { "nvim-lua/plenary.nvim",        lazy = false },        -- linting
-    { 'kyazdani42/nvim-web-devicons', lazy = true },         -- linting
+    },
+    "nvim-treesitter/nvim-treesitter-context",
+    "windwp/nvim-autopairs",
+    'windwp/nvim-ts-autotag',
+
+    {
+        "ThePrimeagen/refactoring.nvim",
+        ft = {
+            "typescript",
+            "typescriptreact",
+            "javascript",
+            "javascriptreact",
+            "lua",
+            "c", "cpp",
+            "python",
+            "java",
+            "php",
+            "ruby",
+        },
+        config = function()
+            require("refactoring").setup()
+        end,
+    },
+
     {
         "nvim-telescope/telescope.nvim",
-        lazy = false,
+
         config = function()
             require("telescope-config").setup(ignored_files)
         end
-    },                                         -- linting
-    { "szw/vim-maximizer",     lazy = false }, -- linting
+    },
+
+    { "nvim-lua/popup.nvim", },
+    { "nvim-lua/plenary.nvim", },
+    { "szw/vim-maximizer" },
+
     {
         "kyazdani42/nvim-tree.lua",
-        lazy = false,
         config = function() require("tree-config").setup(ignored_files) end
-    }, -- linting
+    },
+
+    {
+        "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim",  -- required
+            "sindrets/diffview.nvim", -- optional - Diff integration
+        },
+        config = true
+    },
     {
         "lewis6991/gitsigns.nvim",
         lazy = true,
         config = function() require("git-config").setup() end
-    },                                                        -- linting
-    { "numToStr/Comment.nvim", lazy = true },                 -- linting
-    { 'folke/which-key.nvim',  lazy = false, config = true }, -- linting
+    },
+
+    { "numToStr/Comment.nvim", lazy = true },
+
+    { 'folke/which-key.nvim',  config = true },
+
     {
         "folke/todo-comments.nvim",
-        lazy = false,
         config = function() require("todo-config").setup() end
-    }, -- linting
+    },
+
     {
         "nvim-lualine/lualine.nvim",
-        lazy = false,
-        config = function() require("line-config").setup() end
-    }, -- linting
+        config = function() require("line-config").setup() end,
+    },
+
     {
         "hrsh7th/nvim-cmp",
-        lazy = false,
         config = function() require("cmp-config").setup() end,
         dependencies = {
-            { "hrsh7th/cmp-cmdline",                 lazy = false },                       -- linting
-            { "hrsh7th/cmp-nvim-lsp-signature-help", lazy = false },                       -- linting
-            { "hrsh7th/cmp-git",                     lazy = false, ft = { "gitcommit" } }, -- linting
-            { "hrsh7th/cmp-buffer",                  lazy = false },                       -- linting
+            { "hrsh7th/cmp-cmdline", },
+            { "hrsh7th/cmp-nvim-lsp-signature-help", },
+            { "hrsh7th/cmp-git", },
+            { "hrsh7th/cmp-buffer", },
             {
                 'aspeddro/cmp-pandoc.nvim',
                 ft = { "pandoc", "markdown", "rmd", "bib" },
-                dependencies = { 'nvim-lua/plenary.nvim', 'jbyuki/nabla.nvim' },
-                lazy = false,
-                config = function()
-                    require('cmp_pandoc').setup({
-                        filetypes = { "pandoc", "markdown", "bib" },
-                        bibliography = {
-                            documentation = true,
-                            fields = { "type", "title", "author", "year" }
-                        },
-                        crossref = { documentation = true, enable_nabla = true }
-                    })
-                end
-            },                                                                         -- linting
-            { "hrsh7th/cmp-path",                      lazy = false },                 -- linting
-            { "hrsh7th/cmp-nvim-lua",                  lazy = false, ft = { "lua" } }, -- linting
-            { "hrsh7th/cmp-calc",                      lazy = false },                 -- linting
-            { "hrsh7th/cmp-nvim-lsp",                  lazy = false },                 -- linting
-            { 'davidsierradz/cmp-conventionalcommits', lazy = true },                  -- linting
-            { "f3fora/cmp-spell",                      lazy = false },                 -- linting
-            { 'saadparwaiz1/cmp_luasnip',              lazy = false }                  -- linting
+            },
+            {
+                "jc-doyle/cmp-pandoc-references",
+                ft = { "pandoc", "markdown", "rmd", "bib" },
+            },
+            { "hrsh7th/cmp-path", },
+            { "hrsh7th/cmp-nvim-lua",                  ft = { "lua" } },
+            { "hrsh7th/cmp-calc", },
+            { "hrsh7th/cmp-nvim-lsp", },
+            { 'davidsierradz/cmp-conventionalcommits', },
+            { 'saadparwaiz1/cmp_luasnip', }
         }
-    },                                                                                 -- linting
-    {
-        'akinsho/flutter-tools.nvim',
-        lazy = false,
-        ft = { "dart" },
-        config = function()
-            require("flutter-tools").setup({
-                debugger = { enabled = true, run_via_dap = true },
-                outline = { auto_open = false },
-                decorations = { statusline = { device = true, app_version = true } },
-                widget_guides = { enabled = true, debug = true },
-                dev_log = { enabled = false, open_cmd = "tabedit" },
-                lsp = {
-                    color = {
-                        enabled = true,
-                        background = false,
-                        foreground = true,
-                        background_color = nil,
-                        virtual_text = true,
-                        virtual_text_str = "■"
-                    },
-                    settings = {
-                        showTodos = true,
-                        renameFilesWithClasses = "prompt"
-                    },
-                    capabilities = require("lsp-config.lsp").capabilities
-                }
-            })
-            require("telescope").load_extension("flutter")
-        end
-    }, -- linting
+    },
+    { 'jbyuki/nabla.nvim' },
     {
         'L3MON4D3/LuaSnip',
-        lazy = false,
         build = "make install_jsregexp",
         config = function()
             require("luasnip.loaders.from_vscode").lazy_load()
             require("luasnip.loaders.from_snipmate").lazy_load()
         end,
         dependencies = {
-
-            { 'rafamadriz/friendly-snippets', lazy = false }, -- linting
-            { 'honza/vim-snippets',           lazy = false }  -- linting
+            { 'rafamadriz/friendly-snippets', },
+            { 'honza/vim-snippets', }
         }
-    },                                                        -- linting
-    {
-        'mfussenegger/nvim-dap',
-        lazy = false,
-        config = function() require("dap-config").setup() end,
-        dependencies = { 'rcarriga/nvim-dap-ui' }
-    }, -- linting
+    },
+
+
     {
         "folke/tokyonight.nvim",
-        lazy = false,
-        config = function() theme_setup() end
-    }, -- linting
+        config = function() theme_setup() end,
+    },
+
+    { 'kyazdani42/nvim-web-devicons', lazy = true },
     {
-        'akinsho/git-conflict.nvim',
-        version = "*",
+        'brenoprata10/nvim-highlight-colors',
         config = function()
-            require('git-conflict').setup({
-                default_mappings = true,     -- disable buffer local mapping created by this plugin
-                default_commands = true,     -- disable commands created by this plugin
-                disable_diagnostics = false, -- This will disable the diagnostics in a buffer whilst it is conflicted
-                highlights = {               -- They must have background color, otherwise the default color will be used
-                    incoming = 'DiffAdd',
-                    current = 'DiffText'
-                }
-            })
+            require('nvim-highlight-colors').setup {
+                render = 'background',
+                enable_named_colors = true,
+                enable_tailwind = true,
+            }
         end
-    }, -- linting
-    { "github/copilot.vim", cmd = "Copilot", event = "InsertEnter" }
+    },
+    {
+        'ThePrimeagen/git-worktree.nvim',
+        config = function()
+            require("git-worktree").setup({})
+            require("telescope").load_extension("git_worktree")
+        end
+    },
+    { 'j-hui/fidget.nvim', opts = {} },
+    'wakatime/vim-wakatime',
+    {
+        'rcarriga/nvim-dap-ui',
+        dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+        config = function()
+            require("dapui").setup()
+            require('lsp-config.dap').setup()
+        end
+    },
 })
